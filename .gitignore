@@ -1,0 +1,11 @@
+*
+
+!.github/
+
+!devlogs.md
+!flake.lock
+!flake.nix
+!.gitignore
+
+!docker-compose.yml
+!Dockerfile

@@ -18,15 +18,14 @@
           yarn
           git
 
-          # Convex CLI globally for convenience
-          nodePackages.convex
-
           # Native deps for potential audio libraries
           python3
           pkg-config
         ] ++ lib.optionals stdenv.isLinux [
           alsa-lib
           libpulseaudio
+          # For Android development if needed later
+          android-tools
         ];
 
       in {
@@ -39,11 +38,13 @@
             echo "🎵 Midi-Roll-Share Development Environment"
             echo ""
             echo "Quick start:"
-            echo "  npm install          # Install dependencies"
+            echo "  npm install          # Install dependencies (includes convex)"
             echo "  npx expo start       # Start Expo dev server"
             echo "  npx convex dev       # Start Convex backend"
             echo ""
             echo "Scan QR code with Expo Go app on your phone!"
+            echo ""
+            echo "Note: Convex CLI will be installed via npm, not Nix"
           '';
 
           # Expo environment
