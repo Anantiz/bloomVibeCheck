@@ -41,5 +41,5 @@ A docker-compose with 2 containers:
 4. Run something with these dockers
 5. Realize that these logic blocks where bad - Reset (you ran and saw it was bad)
 6. Define all blocks again, cleanly
-7. Implement Each blocks one by one - Backend-first (6h) - Follow up with front - Back to Back *haha* to fix it - Improvize
+7. Implement Each blocks one by one - Backend-first (6h) - Follow up with front - Back to Back *haha* to fix it - Improvise,Adapt,Overcome
 8. Profit 🥺👉👈
