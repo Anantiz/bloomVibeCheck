@@ -4,23 +4,25 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { useMusicStore } from '../lib/store/use_music_store';
 import { PianoKey } from './piano_key';
 import { BeatSlot } from './beat_slot';
+import { DISPLAYED_PITCH_COUNT, DISPLAYED_BEAT_COUNT } from '../types/core';
 
 interface MidiGridProps {
   pitchesCount?: number;
   beatCount?: number;
 }
 
-export function MidiGrid({ pitchesCount = 8, beatCount = 16 }: MidiGridProps) {
+export function MidiGrid({ pitchesCount = DISPLAYED_PITCH_COUNT, beatCount = DISPLAYED_BEAT_COUNT }: MidiGridProps) {
   const centerPitch = useMusicStore((state) => state.currentCenterPitch);
   const beatOffset = useMusicStore((state) => state.currentBeatOffset);
+  const version = useMusicStore((state) => state.partitionVersion);
 
   // Calculate pitches around center (memoized for performance)
   const pitches = useMemo(() => {
     const half = Math.floor(pitchesCount / 2);
     const pitchArray: number[] = [];
 
-    for (let i = half; i >= -half; i--) {
-      pitchArray.push(centerPitch + i);
+    for (let i = centerPitch + half; i > centerPitch-half; i--) {
+      pitchArray.push(i);
     }
 
     return pitchArray;
@@ -41,7 +43,7 @@ export function MidiGrid({ pitchesCount = 8, beatCount = 16 }: MidiGridProps) {
             {/* Beat slots */}
             {Array.from({ length: beatCount }, (_, i) => (
               <BeatSlot
-                key={i}
+                key={`${pitch}-${beatOffset + i}-v${version}`}
                 pitch={pitch}
                 beatIndex={beatOffset + i}
               />

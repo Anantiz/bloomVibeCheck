@@ -30,7 +30,6 @@ Use Expo & react-native
 A docker-compose with 2 containers:
 - The Backend end, a script that will deploy Convex
 - A container that will host a Web Android-Emulator to run the app (I won't make you install a sketchy APK)
-- A nix-flake (NixOs btw)
 
 
 ### Execution plan:

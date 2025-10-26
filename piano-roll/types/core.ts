@@ -1,27 +1,32 @@
 // types/core.ts - Type definitions first
 
-// TypeScript uses type annotations: variable: type
-export type Pitch = number; // 0-87 representing 88 piano keys
-export type BeatIndex = number; // 0 to MAX_PARTITION_LEN
-export type Volume = number; // 0-100
-export type MIDIPitch = number; // 21-108 (A1 to C8)
+
+// The unpacked binary struct; simpler to use
 export type MusicNoteObj = {
-    pitch: number;
-    beatIndex: number;
-    velocity: number;
-    instrument: InstrumentType;
+  pitch: number;
+  beatIndex: number;
+  velocity: number;
+  instrument: InstrumentType;
 }
 
 // Keep enum numeric values; It is used in manual binary packing; And below 1byte 2^8=256 or it breaks everything
 export const enum InstrumentType {
   PIANO = 0,
-  GUITAR = 1,
+  // GUITAR = 1,  // We won't do this. No time left
 }
 
 // Constants (TypeScript uses const for immutable values)
-export const PITCH_COUNT: number = 88;
+export const LOWEST_MIDI_PITCH: number = 21; // A1
+export const HIGHEST_MIDI_PITCH: number = 96; // C8
+export const TOTAL_PITCH_COUNT: number = HIGHEST_MIDI_PITCH - LOWEST_MIDI_PITCH + 1; // 88 keys
 export const MAX_PARTITION_LEN: number = 15 * 200; // 15min at 200bpm = 3000 beats
 export const ARENA_ALLOCATOR_SIZE: number = 100; // Arbitrary size
+
+export const DISPLAYED_PITCH_COUNT: number = 8; // These are hacks and should not change; I do math to check bound checks based on these.; Must be even
+export const DISPLAYED_BEAT_COUNT: number = 10; // If they change we do buffer overflows and crashes. 30s fixes>>>30mins
+export const PITCH_HALF_WINDOW: number = Math.floor(DISPLAYED_PITCH_COUNT / 2);
+
+export const PLAYBACK_BPM: number = 120;
 
 // MIDI pitch mapping
 export const MIDI_PITCH: Record<string, number> = {
@@ -114,3 +119,56 @@ export const MIDI_PITCH: Record<string, number> = {
   "b8": 107,
   "c9": 108
 } as const;
+
+export const PIANO_SAMPLES_PATH: Record<string, string> = {
+  a1: require('../assets/samples/piano/a1.wav'),
+  a2: require('../assets/samples/piano/a2.wav'),
+  a3: require('../assets/samples/piano/a3.wav'),
+  a4: require('../assets/samples/piano/a4.wav'),
+  a5: require('../assets/samples/piano/a5.wav'),
+  a6: require('../assets/samples/piano/a6.wav'),
+  a7: require('../assets/samples/piano/a7.wav'),
+  b1: require('../assets/samples/piano/b1.wav'),
+  b2: require('../assets/samples/piano/b2.wav'),
+  b3: require('../assets/samples/piano/b3.wav'),
+  b4: require('../assets/samples/piano/b4.wav'),
+  b5: require('../assets/samples/piano/b5.wav'),
+  b6: require('../assets/samples/piano/b6.wav'),
+  b7: require('../assets/samples/piano/b7.wav'),
+  c1: require('../assets/samples/piano/c1.wav'),
+  c2: require('../assets/samples/piano/c2.wav'),
+  c3: require('../assets/samples/piano/c3.wav'),
+  c4: require('../assets/samples/piano/c4.wav'),
+  c5: require('../assets/samples/piano/c5.wav'),
+  c6: require('../assets/samples/piano/c6.wav'),
+  c7: require('../assets/samples/piano/c7.wav'),
+  c8: require('../assets/samples/piano/c8.wav'),
+  d1: require('../assets/samples/piano/d1.wav'),
+  d2: require('../assets/samples/piano/d2.wav'),
+  d3: require('../assets/samples/piano/d3.wav'),
+  d4: require('../assets/samples/piano/d4.wav'),
+  d5: require('../assets/samples/piano/d5.wav'),
+  d6: require('../assets/samples/piano/d6.wav'),
+  d7: require('../assets/samples/piano/d7.wav'),
+  e1: require('../assets/samples/piano/e1.wav'),
+  e2: require('../assets/samples/piano/e2.wav'),
+  e3: require('../assets/samples/piano/e3.wav'),
+  e4: require('../assets/samples/piano/e4.wav'),
+  e5: require('../assets/samples/piano/e5.wav'),
+  e6: require('../assets/samples/piano/e6.wav'),
+  e7: require('../assets/samples/piano/e7.wav'),
+  f1: require('../assets/samples/piano/f1.wav'),
+  f2: require('../assets/samples/piano/f2.wav'),
+  f3: require('../assets/samples/piano/f3.wav'),
+  f4: require('../assets/samples/piano/f4.wav'),
+  f5: require('../assets/samples/piano/f5.wav'),
+  f6: require('../assets/samples/piano/f6.wav'),
+  f7: require('../assets/samples/piano/f7.wav'),
+  g1: require('../assets/samples/piano/g1.wav'),
+  g2: require('../assets/samples/piano/g2.wav'),
+  g3: require('../assets/samples/piano/g3.wav'),
+  g4: require('../assets/samples/piano/g4.wav'),
+  g5: require('../assets/samples/piano/g5.wav'),
+  g6: require('../assets/samples/piano/g6.wav'),
+  g7: require('../assets/samples/piano/g7.wav'),
+};

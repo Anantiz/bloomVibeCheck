@@ -2,12 +2,13 @@ import { ARENA_ALLOCATOR_SIZE, InstrumentType, MusicNoteObj } from "../../../typ
 
 // Gotta max out those L-2 cache hits
 
+export const BMN_PITCH_OFFSET = 0;
+export const BMN_BEAT_INDEX_OFFSET = 1;
+export const BMN_VELOCITY_OFFSET = 3;
+export const BMN_INSTRUMENT_OFFSET = 4;
+export const BMN_SIZE = 5;
+
 export class BinaryMusicNote {
-    public static readonly PITCH_OFFSET = 0;
-    public static readonly BEAT_INDEX_OFFSET = 1;
-    public static readonly VELOCITY_OFFSET = 3;
-    public static readonly INSTRUMENT_OFFSET = 4;
-    public static readonly SIZE = 5;
 
     static unpack(buffer: Uint8Array, offset: number): {
         pitch: number;
@@ -17,7 +18,7 @@ export class BinaryMusicNote {
     } {
         return {
             pitch: buffer[offset],
-            // Manual little-endian 16-bit read
+            // Manual little-endian 16-bit read; Cuz somehow Js doesn't have `struct`
             beatIndex: buffer[offset + 1] | (buffer[offset + 2] << 8),
             velocity: buffer[offset + 3],
             instrument: buffer[offset + 4] as InstrumentType
@@ -25,7 +26,7 @@ export class BinaryMusicNote {
     }
 
     static setPitch(buffer: Uint8Array, offset: number, pitch: number): void {
-        buffer[offset + this.PITCH_OFFSET] = pitch;  // Direct write, no allocations!
+        buffer[offset + BMN_PITCH_OFFSET] = pitch;  // Direct write, no allocations!
     }
 
     static setBeatIndex(buffer: Uint8Array, offset: number, beatIndex: number): void {
@@ -34,15 +35,15 @@ export class BinaryMusicNote {
     }
 
     static setVelocity(buffer: Uint8Array, offset: number, velocity: number): void {
-        buffer[offset + this.VELOCITY_OFFSET] = velocity;
+        buffer[offset + BMN_VELOCITY_OFFSET] = velocity;
     }
 
     static setInstrument(buffer: Uint8Array, offset: number, instrument: InstrumentType): void {
-        buffer[offset + this.INSTRUMENT_OFFSET] = instrument;
+        buffer[offset + BMN_INSTRUMENT_OFFSET] = instrument;
     }
 
     static getPitch(buffer: Uint8Array, offset: number): number {
-        return buffer[offset + this.PITCH_OFFSET];
+        return buffer[offset + BMN_PITCH_OFFSET];
     }
 
     static getBeatIndex(buffer: Uint8Array, offset: number): number {
@@ -50,27 +51,26 @@ export class BinaryMusicNote {
     }
 
     static getVelocity(buffer: Uint8Array, offset: number): number {
-        return buffer[offset + this.VELOCITY_OFFSET];
+        return buffer[offset + BMN_VELOCITY_OFFSET];
     }
 
     static getInstrument(buffer: Uint8Array, offset: number): InstrumentType {
-        return buffer[offset + this.INSTRUMENT_OFFSET] as InstrumentType;
+        return buffer[offset + BMN_INSTRUMENT_OFFSET] as InstrumentType;
     }
 }
 
-/**
- * Zero-allocation arena with maximum performance
- */
 export class NotesArenaAllocator {
-    private buffer: Uint8Array;          // Direct Uint8Array instead of ArrayBuffer
-    private freeStack: Uint32Array;      // Typed array for better performance
+    private buffer: Uint8Array;
+    private freeStack: Uint32Array;
     private freeStackTop: number = 0;
     private readonly capacity: number;
     private usedCount: number = 0;
+    // The Js-elites don't want you to know this but allocations are not free, you can store many objects in a single allocation. I have ARENA_ALLOCATOR_SIZE objects.
+    // (elite reference)
 
     constructor(capacity: number = ARENA_ALLOCATOR_SIZE) {
         this.capacity = capacity;
-        this.buffer = new Uint8Array(capacity * BinaryMusicNote.SIZE);
+        this.buffer = new Uint8Array(capacity * BMN_SIZE);
         this.freeStack = new Uint32Array(capacity);
 
         // Initialize free stack in reverse order for better cache locality
@@ -88,21 +88,21 @@ export class NotesArenaAllocator {
         arenaIndex: number = -1
     ): number {
         if (this.freeStackTop === 0) {
-            // TODO: Make this a linked list of arenas for unlimited notes;
+            // You could make this a linked list of arenas for unlimited notes;
             throw new Error("Arena out of memory");
             // return this.next.allocate(pitch, beatIndex, velocity, instrument) + this.capacity;
         }
         if (! (arenaIndex >= 0 && arenaIndex < this.capacity)) {
             arenaIndex = this.freeStack[--this.freeStackTop];
         }
-        let byteOffset = arenaIndex * BinaryMusicNote.SIZE;
+        let byteOffset = arenaIndex * BMN_SIZE;
 
         // Direct memory writes - fastest possible
         this.buffer[byteOffset] = pitch;
-        this.buffer[byteOffset + 1] = beatIndex & 0xFF;
-        this.buffer[byteOffset + 2] = (beatIndex >> 8) & 0xFF;
-        this.buffer[byteOffset + 3] = velocity;
-        this.buffer[byteOffset + 4] = instrument;
+        this.buffer[byteOffset + BMN_BEAT_INDEX_OFFSET] = beatIndex & 0xFF;
+        this.buffer[byteOffset + BMN_BEAT_INDEX_OFFSET + 1] = (beatIndex >> 8) & 0xFF;
+        this.buffer[byteOffset + BMN_VELOCITY_OFFSET] = velocity;
+        this.buffer[byteOffset + BMN_INSTRUMENT_OFFSET] = instrument;
 
         this.usedCount++;
         return arenaIndex;
@@ -121,7 +121,7 @@ export class NotesArenaAllocator {
             return null;
         }
         if (this.isSlotUsed(arenaIndex)) {
-            const offset = arenaIndex * BinaryMusicNote.SIZE;
+            const offset = arenaIndex * BMN_SIZE;
             return BinaryMusicNote.unpack(this.buffer, offset);
         }
         return null;
@@ -135,6 +135,7 @@ export class NotesArenaAllocator {
     }
 
     private isSlotUsed(arenaIndex: number): boolean {
+        // This neeeds a bit of a change if we implement linked list of arenas
         // Check if arenaIndex is NOT in the free stack
         for (let i = 0; i < this.freeStackTop; i++) {
             if (this.freeStack[i] === arenaIndex) return false;

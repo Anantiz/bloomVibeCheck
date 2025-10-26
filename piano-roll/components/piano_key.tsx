@@ -1,7 +1,7 @@
 // components/PianoKey.tsx
 import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
-import { playSound } from '../lib/audio/sound_engine'; // You'll implement this
+import { playSingleNote } from '../lib/audio/sound_engine'; // You'll implement this
 import { useMusicStore } from '../lib/store/use_music_store';
 
 const PITCH_NAMES = [
@@ -9,7 +9,7 @@ const PITCH_NAMES = [
 ];
 
 function pitchToName(pitch: number): string {
-  const octave = Math.floor(pitch / 12) - 1;
+  const octave = Math.floor(pitch / 12);
   const note = PITCH_NAMES[pitch % 12];
   return `${note}${octave}`;
 }
@@ -28,7 +28,7 @@ export function PianoKey({ pitch }: PianoKeyProps) {
   const isBlack = isBlackKey(pitch);
 
   const handlePress = () => {
-    playSound(currentInstrument, pitch);
+    playSingleNote(currentInstrument, pitch);
   };
 
   return (

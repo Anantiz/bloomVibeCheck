@@ -11,8 +11,18 @@ interface BeatSlotProps {
 }
 
 export function BeatSlot({ pitch, beatIndex }: BeatSlotProps) {
-  // ""Subscribe to partition (will re-render when partition changes)"" What ?
   const { getNoteAt, addNote, removeNoteAt } = useMusicStore();
+  // """
+  // Since you're destructuring methods (not data),
+  // and methods are stable references
+  // (they don't change), React's shallow comparison sees:
+  // """
+
+  const version = useMusicStore((state) => state.partitionVersion);
+  void version; // ← Explicitly mark as "used"
+  // Since the first one destructures methods the === comparison always returns true
+  // Force re-render on partition change;
+  // We have a separate value cuz the Partition object itself is mutable and heavy
 
   const hasNote = getNoteAt(pitch, beatIndex) !== null;
 
@@ -32,8 +42,6 @@ export function BeatSlot({ pitch, beatIndex }: BeatSlotProps) {
     <Pressable
       style={[styles.slot, hasNote ? styles.slotWithNote : styles.slotEmpty]}
       onPress={handleSinglePress}
-      // React Native doesn't have native double-tap
-      // We'll implement it simply
       onLongPress={handleDoublePress}
       delayLongPress={200}
     >
