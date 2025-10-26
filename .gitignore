@@ -1,7 +1,6 @@
 *
 
 !.github/
-
 !devlogs.md
 !flake.lock
 !flake.nix
@@ -9,3 +8,6 @@
 
 !docker-compose.yml
 !Dockerfile
+
+!piano-roll/
+!piano-roll/.gitignore

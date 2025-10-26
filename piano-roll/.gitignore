@@ -1,0 +1,40 @@
+!/.gitignore
+
+# Core config files
+!/app.json
+!/package.json
+!/package-lock.json
+!/tsconfig.json
+!/babel.config.js
+!/metro.config.js
+!/expo-env.d.ts
+!eslint.config.js
+
+# Source code
+!/app/
+!/app/**/*
+!/components/
+!/components/**/*
+!/constants/
+!/constants/**/*/
+!/hooks/
+!/hooks/**/*
+!/scripts/
+!/scripts/**/*
+!/lib/
+!/lib/**/*
+!/types/
+!/types/**/*
+!/utils/
+!/utils/**/*
+
+# Assets (if you have any custom ones)
+!/assets/
+!/assets/**/*
+
+# Convex backend
+!/convex/
+!/convex/**/*
+
+# README
+!/README.md

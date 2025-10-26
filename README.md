@@ -6,7 +6,7 @@
 
 **I will make this project over the week end to:**
 - Learn about the whole TypeScript and mobile developer experience
-- Demonstrate I'm Lightning McQueen
+- Demonstrate I'm Lightning McQueen *KACHOW*
 
 ### Overview (developement plan actually):
 
@@ -35,11 +35,11 @@ A docker-compose with 2 containers:
 
 ### Execution plan:
 
-1. Learn Convex (done last night)
+1. Learn Convex
 2. Learn Expo and what it has to do with React
 3. Define Blocks of Logics for each service
 4. Run something with these dockers
 5. Realize that these logic blocks where bad - Reset (you ran and saw it was bad)
 6. Define all blocks again, cleanly
-7. Implement Each blocks one by one - Backend-first (6h) - Follow up with front - Back to Back *haha* to fix it - Improvise,Adapt,Overcome
+7. Implement Each blocks one by one - ~~Backend-first (6h)~~ - Start with front as it can work independently (and is more fun) - then Back to Back *haha*
 8. Profit 🥺👉👈
