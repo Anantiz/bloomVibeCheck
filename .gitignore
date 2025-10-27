@@ -11,3 +11,5 @@
 
 !piano-roll/
 !piano-roll/.gitignore
+!images/
+!images/**/*
