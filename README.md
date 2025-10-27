@@ -1,44 +1,79 @@
-### Midi-Roll-Share
+# Midi-Roll-Share 🎹
 
 **POV: You love David so you make an app to share melody drafts together**
 
-### Preface:
+## Preface:
 
-**I will make this project over the week end to:**
-- Learn about the whole TypeScript and mobile developer experience
-- Demonstrate I'm Lightning McQueen *KACHOW*
+**I made this project over the weekend to:**
 
-### Overview (developement plan actually):
+- Learn the modern TypeScript + mobile developer stack
+- Experience the whole Convex + Expo + Vercel pipeline
+- Demonstrate that I am, in fact, **Lightning McQueen *(KACHOW)***
 
-**Backend**
-Use Convex.
+## Stack Overview:
 
-*main components*
-- Register user, Safe Auth
-- Save music projects
+**Backend**: Uses Convex
 
-**Frontend**
-Use Expo & react-native
+**Frontend**: Uses Expo
 
-*main components*
-- Midi-roll, play back Samples, (Guitar & Piano - Forcing a modular architecture)
-- Save and Load midi-songs (remote)
-- Explore-page where users can share their projects with anyone
-
-**Deployment**
-
-A docker-compose with 2 containers:
-- The Backend end, a script that will deploy Convex
-- A container that will host a Web Android-Emulator to run the app (I won't make you install a sketchy APK)
+**Deployment**:
+- **Backend:** Expo-cloud
+- **Web Build:** Vite *[(test it live)](https://piano-roll-rust.vercel.app/)*
 
 
-### Execution plan:
+## Execution plan:
 
 1. Learn Convex
-2. Learn Expo and what it has to do with React
-3. Define Blocks of Logics for each service
-4. Run something with these dockers
-5. Realize that these logic blocks where bad - Reset (you ran and saw it was bad)
-6. Define all blocks again, cleanly
-7. Implement Each blocks one by one - ~~Backend-first (6h)~~ - Start with front as it can work independently (and is more fun) - then Back to Back *haha*
-8. Profit 🥺👉👈
+2. Learn Expo and React-Native
+3. Struggle
+4. Deploy
+5. Profit 🥺👉👈
+
+## The app features:
+
+- Interactive **piano roll** — tap to write a beat, long-press to erase
+
+- **Shareable projects** between users
+
+- **User authentication** and persistence via Convex
+
+- *“Advanced”* audio processing (translation: it works, mostly)
+
+- **Cross-platform** builds (Web / iOS / Android)
+
+- UX/UI so bad it could land me in **jail**
+
+- A **dogshit** asset loader that takes roughly 30 seconds to load piano samples
+
+## Technical Outline
+
+- Wrestled with **audio APIs**: expo-av, expo-audio, and the Web Audio API
+
+- Debugged **file-loading** differences between native and web (filesystem abstraction hell)
+
+- Learned how asset bundling and TypeScript runtime/build-time resolution interact
+
+- Implemented a manual **arena allocator in TypeScript** (because why the fck not?)
+
+- **Investigated** cross-platform audio latency, buffering, and rendering constraints *(strong emphasis on "Investigated")*
+
+- Documented the entire mental collapse in devlogs.md
+
+## Skills & Lessons Learned
+
+- Full-stack TypeScript familiarity (frontend + backend + build tooling)
+
+- Audio synthesis, scheduling, and timing precision on web vs native
+
+- Mobile deployment flow (Expo EAS + Vercel + Convex Cloud)
+
+- Unmatched industry skills in VibeCoding
+
+
+### App Guide: (Web demo)
+___
+![Guide-1](./images/main.png)
+___
+![Guide-2](./images/menu.png)
+___
+![Guide-3](./images/community.png)

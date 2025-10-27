@@ -156,3 +156,8 @@ tbf, i stat to not hate react/ts anymore
 
 ### 2:50: If you manually change the URl you can go to piano-roll without being logged. Will I fix that ? (hell nah)
 At least: it doesn't cause issue; it's as invite. cannot save cannot load; it's not so bad
+
+### 3:13: Mostly Done. Few unimportant fixes could be done still; I'll deploy later
+Give me some 3h sleep pls; I've been working for 18h today lmao
+
+### 7:40; Back with croissants
