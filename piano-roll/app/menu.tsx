@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import LoadPartitionOverlay from '@/components/LoadPartitionOverlay';
+import SavePartitionOverlay from '@/components/SavePartitionOverlay';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function MenuScreen() {
   const router = useRouter();
+  const [showLoadOverlay, setShowLoadOverlay] = useState(false);
+  const [showSaveOverlay, setShowSaveOverlay] = useState(false);
+
+  const { userName, logout } = useAuth();
 
   const handleLogout = async () => {
-    // TODO: Clear auth token
-    // await SecureStore.deleteItemAsync('userToken');
-    router.replace('/login');
+    try {
+      console.log("Starting logout...");
+      await logout();
+      console.log("Logout complete, navigating to login...");
+      router.replace('/login');
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -32,19 +44,26 @@ export default function MenuScreen() {
 
         <Text style={styles.title}>Menu</Text>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="settings-outline" size={24} color="#fff" />
-          <Text style={styles.menuText}>Settings</Text>
+        {userName && (
+          <Text style={styles.userName}>Logged in as: {userName}</Text>
+        )}
+
+        {/* LOAD button */}
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setShowLoadOverlay(true)}
+        >
+          <Ionicons name="download-outline" size={24} color="#8b5cf6" />
+          <Text style={styles.menuText}>Load Partition</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="help-circle-outline" size={24} color="#fff" />
-          <Text style={styles.menuText}>Help</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.menuItem}>
-          <Ionicons name="information-circle-outline" size={24} color="#fff" />
-          <Text style={styles.menuText}>About</Text>
+        {/* SAVE button */}
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => setShowSaveOverlay(true)}
+        >
+          <Ionicons name="save-outline" size={24} color="#8b5cf6" />
+          <Text style={styles.menuText}>Save Partition</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -55,6 +74,20 @@ export default function MenuScreen() {
           <Text style={[styles.menuText, styles.logoutText]}>Logout</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Overlays */}
+      {showLoadOverlay && userName && (
+        <LoadPartitionOverlay
+          userName={userName}
+          onClose={() => setShowLoadOverlay(false)}
+        />
+      )}
+      {showSaveOverlay && userName && (
+        <SavePartitionOverlay
+          userName={userName}
+          onClose={() => setShowSaveOverlay(false)}
+        />
+      )}
     </View>
   );
 }
@@ -83,6 +116,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
+    marginBottom: 10,
+  },
+  userName: {
+    fontSize: 14,
+    color: '#999',
     marginBottom: 20,
   },
   menuItem: {

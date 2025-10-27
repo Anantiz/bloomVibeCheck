@@ -1,7 +1,7 @@
 // components/MidiGrid.tsx
 import React, { useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { useMusicStore } from '../lib/store/use_music_store';
+import { useMusicStore } from '../lib/store/use-music-store';
 import { PianoKey } from './piano_key';
 import { BeatSlot } from './beat_slot';
 import { DISPLAYED_PITCH_COUNT, DISPLAYED_BEAT_COUNT } from '../types/core';

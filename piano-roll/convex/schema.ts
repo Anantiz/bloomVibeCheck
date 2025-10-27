@@ -6,14 +6,17 @@ export default defineSchema({
   users: defineTable({
     name: v.string(),
     passwordHash: v.string(),
-  }).index("by_name", ["name"]),
+    sessionToken: v.optional(v.string()),
+    lastLogin: v.optional(v.number()),
+  })
+    .index("by_name", ["name"])
+    .index("by_token", ["sessionToken"]),
 
   partitions: defineTable({
     creatorName: v.string(),
     name: v.string(),
     bpm: v.number(),
-    // Store as JSON string for simplicity (no nested objects in Convex)
-    beatsJson: v.string(), // JSON.stringify(Beat[])
+    beatsJson: v.string(),
   })
     .index("by_creator", ["creatorName"])
     .index("by_creator_and_name", ["creatorName", "name"]),

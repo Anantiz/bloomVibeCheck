@@ -29,11 +29,8 @@ export function partitionToMidi(partition: Partition): SerializedBeat[] {
 
 export function partitionFromMidi(
   beats: SerializedBeat[],
-  bpm: number,
-  name: string,
-  creatorName: string
 ): Partition {
-  const partition = new Partition(creatorName, name);
+  const partition = new Partition();
 
   for (const beat of beats) {
     partition.addNote(beat.pitch, beat.beatIndex, beat.velocity, InstrumentType.PIANO);

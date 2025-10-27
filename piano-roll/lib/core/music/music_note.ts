@@ -2,6 +2,9 @@ import { ARENA_ALLOCATOR_SIZE, InstrumentType, MusicNoteObj } from "../../../typ
 
 // Gotta max out those L-2 cache hits
 
+// Nah tbf I know it's absoluetly useless to implement this kind of algorithm
+// It helped me learn a bite better how JS memory management works under the hood
+
 export const BMN_PITCH_OFFSET = 0;
 export const BMN_BEAT_INDEX_OFFSET = 1;
 export const BMN_VELOCITY_OFFSET = 3;

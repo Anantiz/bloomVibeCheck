@@ -1,7 +1,8 @@
 // components/BeatSlot.tsx
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { useMusicStore } from '../lib/store/use_music_store';
+import { Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { useMusicStore } from '../lib/store/use-music-store';
+import { DISPLAYED_PITCH_COUNT, DISPLAYED_BEAT_COUNT, BEAT_SLOT_WIDTH_RATIO } from '@/types/core';
 
 const DEFAULT_VELOCITY = 100;
 
@@ -11,6 +12,8 @@ interface BeatSlotProps {
 }
 
 export function BeatSlot({ pitch, beatIndex }: BeatSlotProps) {
+  const { height } = useWindowDimensions();
+  const keyHeight = (height * 0.9) / DISPLAYED_PITCH_COUNT;
   const { getNoteAt, addNote, removeNoteAt } = useMusicStore();
   // """
   // Since you're destructuring methods (not data),
@@ -19,10 +22,7 @@ export function BeatSlot({ pitch, beatIndex }: BeatSlotProps) {
   // """
 
   const version = useMusicStore((state) => state.partitionVersion);
-  void version; // ← Explicitly mark as "used"
-  // Since the first one destructures methods the === comparison always returns true
-  // Force re-render on partition change;
-  // We have a separate value cuz the Partition object itself is mutable and heavy
+  void version;
 
   const hasNote = getNoteAt(pitch, beatIndex) !== null;
 
@@ -40,7 +40,11 @@ export function BeatSlot({ pitch, beatIndex }: BeatSlotProps) {
 
   return (
     <Pressable
-      style={[styles.slot, hasNote ? styles.slotWithNote : styles.slotEmpty]}
+      style={[
+        styles.slot,
+        { width: keyHeight * BEAT_SLOT_WIDTH_RATIO, height: keyHeight },
+        hasNote ? styles.slotWithNote : styles.slotEmpty
+      ]}
       onPress={handleSinglePress}
       onLongPress={handleDoublePress}
       delayLongPress={200}
@@ -52,8 +56,6 @@ export function BeatSlot({ pitch, beatIndex }: BeatSlotProps) {
 
 const styles = StyleSheet.create({
   slot: {
-    width: 50,
-    height: 40,
     borderWidth: 0.5,
     borderColor: '#333',
   },

@@ -49,7 +49,7 @@ export class PartitionPlaybackController {
     player.play();
 
     (async () => {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 120)); // deletes the temp file after 2min
       await agressiveCleanupAllCacheWav(); // Free up memory immediately
     })(); // Setup a thing to destroy the cached waves to not leak memory; On paper it would work
     // I wrote my first JS anonymous monstruosity all by myself *proudly*
@@ -65,10 +65,6 @@ export class PartitionPlaybackController {
     }
   }
 
-  // ~~Get the playback promise for tracking~~ make it private, seems safer
-  private getPlaybackPromise(): Promise<{ player: any; duration: number }> | null {
-    return this.playbackPromise;
-  }
 
   // Start playback and return the promise (doesn't await it)
   startPlaybackDetached(partition: Partition, bpm: number): Promise<{ player: any; duration: number }> {
@@ -77,7 +73,12 @@ export class PartitionPlaybackController {
     return this.playbackPromise;
   }
 
-  // Well; TypeScript doesn't have destructors; How the Fck am I going to cleanup that tmp audio file?
+  isFinished(): boolean {
+    if (this.currentPlayer === null)
+      return true;
+    return this.currentPlayer.currentTime >= this.currentPlayer.duration || this.isCancelled;
+  }
+
 }
 
 

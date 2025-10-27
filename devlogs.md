@@ -147,3 +147,12 @@ Quite clever concept: But it's supposed to be cross platfrom tho ...
 ### 21:30:  Well, loading assets in mobile is an other story itself; And then the audio is not available by default ...
 
 ### 22:30 FUCKING FINALY
+
+## Monday
+
+### 1:30 am Just vibing
+
+tbf, i stat to not hate react/ts anymore
+
+### 2:50: If you manually change the URl you can go to piano-roll without being logged. Will I fix that ? (hell nah)
+At least: it doesn't cause issue; it's as invite. cannot save cannot load; it's not so bad

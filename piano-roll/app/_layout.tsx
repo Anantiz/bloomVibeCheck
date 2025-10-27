@@ -9,7 +9,11 @@ import { initAssets } from '@/lib/init';
 
 import { setAudioModeAsync } from 'expo-audio';
 import { Platform } from 'react-native';
-import { createAudioPlayer } from 'expo-audio';
+
+
+import { ConvexProvider, ConvexReactClient } from "convex/react";
+
+const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!);
 
 SplashScreen.preventAutoHideAsync();
 
@@ -59,28 +63,29 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        {/* Auth screen - standalone */}
-        <Stack.Screen name="login" options={{ headerShown: false }} />
+    <ConvexProvider client={convex}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          {/* Auth screen - standalone */}
+          <Stack.Screen name="login" options={{ headerShown: false }} />
 
-        {/* Main app with tabs */}
-        <Stack.Screen name="(main)" options={{ headerShown: false }} />
+          {/* Main app with tabs */}
+          <Stack.Screen name="(main)" options={{ headerShown: false }} />
 
-        {/* Overlay menu - shown as modal over everything */}
-        <Stack.Screen
-          name="menu"
-          options={{
-            presentation: 'modal',
-            headerShown: false,
-            // Make it transparent so underlying content shows
-            animation: 'fade',
-          }}
-        />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+          {/* Overlay menu - shown as modal over everything */}
+          <Stack.Screen
+            name="menu"
+            options={{
+              presentation: 'modal',
+              headerShown: false,
+              // Make it transparent so underlying content shows
+              animation: 'fade',
+            }}
+          />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </ConvexProvider>
+
   );
 }
-
-

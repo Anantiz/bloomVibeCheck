@@ -5,8 +5,10 @@ const { AudioPlayer } = require('expo-audio');
 import { Asset } from 'expo-asset';
 
 import { Instrument } from './instrument';
-import { MIDI_PITCH, InstrumentType, PIANO_SAMPLES_PATH } from "../../types/core";
+import { MIDI_PITCH, InstrumentType} from "../../types/core";
 import { Partition } from '../core/music/partition';
+
+import { PIANO_SAMPLES_PATH } from '@/lib/sample_paths';
 
 
 

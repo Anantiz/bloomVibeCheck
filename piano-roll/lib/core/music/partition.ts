@@ -11,14 +11,10 @@ import {
 export class Partition {
 
     public furthestBeatIndex: number = 0;
-    public creator: string;
-    public name: string;
     private beatsGrid: Array<Array<number>>; // 2D Array for light-weight beat grid (pointers to MusicNotes); Could be even more optimized with disgusting manual uint20
     private arenaAllocator: NotesArenaAllocator; // Dynamic Heavy Objects
 
-    constructor(creator: string, name: string) {
-        this.creator = creator;
-        this.name = name;
+    constructor() {
         this.beatsGrid = Array.from({ length: HIGHEST_MIDI_PITCH - LOWEST_MIDI_PITCH + 1 }, () => Array(MAX_PARTITION_LEN).fill(-1));
         this.arenaAllocator = new NotesArenaAllocator();
     }

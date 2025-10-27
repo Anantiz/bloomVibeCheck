@@ -28,5 +28,5 @@ export default function Index() {
   }
 
   // Redirect based on auth state
-  return <Redirect href={isAuthenticated ? "/piano_roll" : "/login"} />;
+  return <Redirect href={isAuthenticated ? "/piano-roll" : "/login"} />;
 }

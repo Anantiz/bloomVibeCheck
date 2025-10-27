@@ -1,8 +1,15 @@
 // components/controls.tsx
 import React from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
-import { useMusicStore, PITCH_STEP, BEAT_STEP } from '../lib/store/use_music_store';
+import { useMusicStore, PITCH_STEP, BEAT_STEP } from '../lib/store/use-music-store';
 import { startPartitionPlayback, stopPartitionPlayback } from '../lib/audio/sound_engine';
+
+// What if both handlePlay and handleStop are called in the same tick...
+// General: "Are we saying there's a chance that when we push that button... we destroy the world?"
+// Oppenheimer: "The chances are near zero."
+// General: "Near zero?"
+// Oppenheimer: "What do you want from theory alone?"
+// General: "Zero would be nice!"
 
 export function Controls() {
     const {
@@ -15,12 +22,6 @@ export function Controls() {
         setPlaybackController,
     } = useMusicStore();
 
-    // What if both handlePlay and handleStop are called in the same tick...
-    // General: "Are we saying there's a chance that when we push that button... we destroy the world?"
-    // Oppenheimer: "The chances are near zero."
-    // General: "Near zero?"
-    // Oppenheimer: "What do you want from theory alone?"
-    // General: "Zero would be nice!"
 
     const handlePlay = () => {
         if (isPlaying) {
@@ -39,10 +40,6 @@ export function Controls() {
         setPlaying(false);
     };
 
-    const handleMenuOverlay = () => {
-        // TODO: Implement overlay
-        console.log('Open menu overlay');
-    };
 
     return (
         <View style={styles.container}>
@@ -77,10 +74,6 @@ export function Controls() {
                 <ControlButton
                     label="⏹ Stop"
                     onPress={handleStop}
-                />
-                <ControlButton
-                    label="☰ Menu"
-                    onPress={handleMenuOverlay}
                 />
             </View>
         </View>
@@ -119,7 +112,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         backgroundColor: '#3a3a3a',
         borderRadius: 5,
-        minWidth: 100,
+        flex: 1,
+        marginHorizontal: 5,
         alignItems: 'center',
     },
     primaryButton: {

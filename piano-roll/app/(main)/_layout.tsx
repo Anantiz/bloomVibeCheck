@@ -15,7 +15,7 @@ export default function MainLayout() {
       }}
     >
       <Tabs.Screen
-        name="piano_roll"
+        name="piano-roll"
         options={{
           title: 'Piano Roll',
           tabBarIcon: ({ color, size }) => (
