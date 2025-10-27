@@ -18,7 +18,7 @@
 
 **Deployment**:
 - **Backend:** Expo-cloud
-- **Web Build:** Vite ***[(test it live)](https://piano-roll-rust.vercel.app/) 📍***
+- **Web Build:** Vercel ***[(test it live)](https://piano-roll-rust.vercel.app/) 📍***
 
 
 ## Execution plan:
