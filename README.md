@@ -19,6 +19,8 @@
 **Deployment**:
 - **Backend:** Expo-cloud
 - **Web Build:** Vercel ***[(test it live)](https://piano-roll-rust.vercel.app/) 📍***
+BEFORE CLIKCING ON THIS: The loading takes like 30seconds (sorry), and you will need to Register an account, juste use something like username=John1 password=abcd
+I ain't *fixing* the project in order to keep the "Over a weekend" truthful 
 
 
 ## Execution plan:
